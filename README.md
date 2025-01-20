@@ -10,14 +10,14 @@
 
 # Как запустить
 ## Telegram bot
-@@emotional_intelligence1_Bot
+@emotional_intelligence1_Bot
 
 ## Для разработчиков
 ```
-git clone git@github.com:Rakhm-cyber/Health_helper.git
-cd Health_helper
+git clone https://github.com/geozasimov/emotional_bot
+cd emotional_bot
 ```
-Добавьте свою конфигурацию в .env файл
+Добавьте свою конфигурацию в .env файл, а точнее параметры базы данных, токен Gigachat от сбер и токен телеграмм бота от BotFather
 
 ```
 docker-compose run migrate
