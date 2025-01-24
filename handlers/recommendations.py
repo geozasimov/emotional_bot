@@ -5,7 +5,7 @@ from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from handlers.gigachat.gigachat_recomendations import physical_activity_recommendations, nutrition_recommendations
+from handlers.gigachat.gigachat_recomendations import emotion_recommendations
 
 @router.callback_query(lambda c: c.data == "emotion_recommendations")
 async def physical_recommendations(callback: CallbackQuery, state: FSMContext):
