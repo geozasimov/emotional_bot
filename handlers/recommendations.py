@@ -18,7 +18,7 @@ async def physical_recommendations(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer(f"{recommendation}", parse_mode="Markdown")
     await callback.answer()
 
-@ButtomRouter.message(lambda message: message.text == "Рекомендации по эмоциональному состоянию")
+@ButtonRouter.message(lambda message: message.text == "Рекомендации по эмоциональному состоянию")
 async def nutrition_recommendations_button(message: Message):
     user_id = message.from_user.id
     user_data = await repository.get_user(user_id)
