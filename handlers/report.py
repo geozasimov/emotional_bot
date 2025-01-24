@@ -1,6 +1,6 @@
 from handlers.handler import router
 from database import repository
-from handlers.gigachat.gigachat_weekly import weekly_recommendations
+
 
 import matplotlib.pyplot as plt
 from datetime import datetime
