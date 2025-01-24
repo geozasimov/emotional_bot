@@ -28,7 +28,7 @@ async def main():
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
 
     dispatcher.include_router(router)
-    dispatcher.include_router(ButtomRouter)
+    dispatcher.include_router(ButtonRouter)
     dispatcher.include_router(gigachat_router)
 
     dispatcher.update.middleware(UserAuthorizationMiddleware()) 
