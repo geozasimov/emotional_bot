@@ -19,9 +19,6 @@ class Registration(StatesGroup):
     name = State()
     age = State()
     gender = State()
-    height = State()
-    weight = State()
-    timezone = State()
 
 recommendation_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -60,57 +57,4 @@ async def add_gender(message: Message, state: FSMContext):
         await message.answer("Пожалуйста, введите свой пол корректно(м/ж)")
         return
     await state.update_data(gender=message.text)
-    await state.set_state(Registration.height)
 
-    timezones = [
-        "Europe/Moscow", "Europe/Samara", "Asia/Yekaterinburg", "Asia/Novosibirsk",
-        "Asia/Krasnoyarsk", "Asia/Irkutsk", "Asia/Vladivostok", "Asia/Kamchatka"
-    ]
-    buttons = InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text=tz, callback_data=tz)] for tz in timezones
-        ]
-    )
-    await message.answer("Выберите ваш часовой пояс:", reply_markup=buttons)
-
-@router.callback_query(Registration.timezone)
-async def add_timezone(callback: CallbackQuery, bot: Bot, scheduler: AsyncIOScheduler, state: FSMContext):
-    timezone = callback.data
-    await state.update_data(timezone=timezone)
-    await callback.message.answer(f"Часовой пояс установлен: {timezone}.")
-    await callback.message.edit_reply_markup(reply_markup=None)
-
-    data = await state.get_data()
-
-    await repository.add_user(
-        user_id=callback.from_user.id,
-        name=data.get("name"),
-        age=int(data.get("age")),
-        gender=data.get("gender"),
-        timezone=data.get("timezone")
-    )
-
-    await callback.message.answer(f"Приятно познакомиться, {data.get('name')}!\nТеперь каждый день вечером вам будет предложено пройти анкетирование для отслеживание вашего состояния.\nКаждую неделю вы сможете смотреть отчет и получать мою рецензию!")
-    await callback.message.answer(
-        "Выберите, что вас интересует:",
-        reply_markup=recommendation_keyboard
-    )
-    await state.clear()
-
-    scheduler.add_job(
-        daily_survey.send_daily_survey,
-        #trigger=DailyTrigger(hour=20, minute=0, second=0, timezone=ZoneInfo(timezone)),
-        'interval',
-        seconds=180,
-        args=[callback.from_user.id, bot, state],
-        max_instances=10
-    )
-
-    scheduler.add_job(
-        review.send_review_survey,
-        #trigger=IntervalTrigger(days=30)
-        'interval',
-        seconds=300,
-        args=[callback.from_user.id, bot, state],
-        max_instances=10
-    )
