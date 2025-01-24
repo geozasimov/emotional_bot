@@ -7,6 +7,8 @@ from aiogram.types import CallbackQuery, Message
 
 from handlers.gigachat.gigachat_recomendations import emotion_recommendations
 
+ButtonRouter = Router()
+
 @router.callback_query(lambda c: c.data == "emotion_recommendations")
 async def physical_recommendations(callback: CallbackQuery, state: FSMContext):
     user_id = callback.from_user.id
