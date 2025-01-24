@@ -6,7 +6,6 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from handlers.recommendations import ButtomRouter
 from handlers import *
-from handlers.gigachat.gigachat_mental import quiz_router
 from utils import config
 from database import repository
 
@@ -29,7 +28,6 @@ async def main():
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
 
     dispatcher.include_router(router)
-    dispatcher.include_router(quiz_router)
     dispatcher.include_router(ButtomRouter)
     dispatcher.include_router(gigachat_router)
 
