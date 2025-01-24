@@ -14,7 +14,7 @@ async def physical_recommendations(callback: CallbackQuery, state: FSMContext):
     user_data = await repository.get_user(user_id)
     user_data = user_data[0]
 
-    recommendation = await physical_activity_recommendations(user_data['age'], user_data['gender'])
+    recommendation = await emotion_recommendations(user_data['age'], user_data['gender'])
     await callback.message.answer(f"{recommendation}", parse_mode="Markdown")
     await callback.answer()
 
@@ -23,6 +23,6 @@ async def nutrition_recommendations_button(message: Message):
     user_id = message.from_user.id
     user_data = await repository.get_user(user_id)
     user_data = user_data[0]
-    recommendation = await physical_activity_recommendations(user_data['age'], user_data['gender'])
+    recommendation = await emotion_recommendations(user_data['age'], user_data['gender'])
 
     await message.answer(f"{recommendation}", parse_mode="Markdown")
