@@ -4,7 +4,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from handlers.recommendations import ButtomRouter
+from handlers.recommendations import ButtonRouter
 from handlers import *
 from utils import config
 from database import repository
