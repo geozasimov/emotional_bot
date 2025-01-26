@@ -3,6 +3,7 @@ from database import repository
 from handlers import daily_survey
 from handlers import review
 
+from aiogram import Router
 from aiogram import Bot
 from aiogram import types
 from aiogram.fsm.state import StatesGroup, State
@@ -15,6 +16,8 @@ from zoneinfo import ZoneInfo
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+
+router = Router()
 
 class Registration(StatesGroup):
     name = State()
@@ -54,10 +57,17 @@ async def add_age(message: Message, state: FSMContext):
 
 @router.message(Registration.gender)
 async def add_gender(message: types.Message, state: FSMContext):
+    await state.update_data(gender=message.text)
+    data = await state.get_data()
+    await message.answer(f"Вы указали пол: {data['gender']}")
+    
+@router.message(Registration.gender)
+async def add_gender(message: types.Message, state: FSMContext):
     if message.text.lower() != "м" and message.text.lower() != "ж":
         await message.answer("Пожалуйста, введите свой пол корректно(м/ж)")
         return
-    await state.update_data(gender=message.text)
+    data = await state.get_data()
+    await message.answer(f"Вы указали пол: {data['gender']}")
     await repository.add_user(
         user_id = message.from_user.id,
         name=data.get("name"),
