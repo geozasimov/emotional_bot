@@ -12,27 +12,28 @@ class UserAuthorizationMiddleware(BaseMiddleware):
         data: Dict[str, Any]
     ) -> Any:
         
-        state = data.get('raw_state', None)
+        state = data.get('raw_state')
+        user_id = 0
 
-        # Проверяем строковое состояние вместо объекта
+        if event.message:  
+            user_id = event.message.from_user.id
+            if not event.message.text:
+                await data['bot'].send_message(user_id, "Я могу отвечать только на текст!")
+                return
+            if state and event.message.text.startswith('/'):
+                await event.message.answer("В данный момент выполнение команд невозможно.")
+                return
+        elif event.callback_query:  
+            user_id = event.callback_query.from_user.id
+
         if state in [Registration.name.state, Registration.age.state, Registration.gender.state]:
             return await handler(event, data)
 
-        user_id = None
-
-        if event.message:
-            user_id = event.message.from_user.id
-        elif event.callback_query:
-            user_id = event.callback_query.from_user.id
-
-        if not user_id:
-            return await handler(event, data)
         
         user = await repository.get_user(user_id)
-        
-        if not user and event.message and event.message.text:
-            if not event.message.text.startswith('/registration') and not event.message.text.startswith('/start'):
-                await event.message.answer("Вы не зарегистрированы. Пожалуйста, зарегистрируйтесь, чтобы использовать бота.")
-                return
+
+        if not user and not event.message.text.startswith('/registration') and not event.message.text.startswith('/start'):
+            await event.message.answer("Вы не зарегистрированы. Пожалуйста, зарегистрируйтесь, чтобы использовать бота.")
+            return
     
         return await handler(event, data)
