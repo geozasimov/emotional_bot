@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users;
+DROP TABLE users;
 
-DROP TABLE IF EXISTS user_actions;
+DROP TABLE user_actions;
 
