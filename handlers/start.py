@@ -12,8 +12,8 @@ user_states = {}
 
 main_keyboard = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="Информация о команде"), KeyboardButton(text="Викторина о здоровье")],
-        [KeyboardButton(text="Поддержка"), KeyboardButton(text="Психологическая помощь")]
+        [KeyboardButton(text="Информация о команде"), KeyboardButton(text="Эмоция")],
+        [KeyboardButton(text="Мотивация"), KeyboardButton(text="Совет")]
     ],
     resize_keyboard=True,
     one_time_keyboard=True
@@ -28,7 +28,8 @@ async def start(message: Message):
         user_name = message.from_user.first_name
     
     await message.answer(
-        f"Привет, {user_name}!\nЯ помогу тебе поддерживать свое здоровье. Вот, что я могу:\n - Напоминать тебе всегда пить воду /water_remind\n - Каждый вечер я буду опрашивать тебя о твоем состоянии, чтобы в конце недели ты смог посмотреть как менялись твои уровни физ. активности, стресса, сна и настроения /report\n - Давать тебе рекоммендации по физической активности и питанию\n - Проводить викторину чтобы ты повышал свои знания о здоровом образе жизни\n - Оказывать психологическую поддержку\n - Просто отвечать на твои вопросы о здоровом образе жизни и давать советы!\n\n Но сначала зарегистрируйся, чтобы использовать весь мой функционал -> /registration",
+        f"Привет, {user_name}!\nЯ помогу тебе развить эмоциональнный интеллект. Вот, что я могу:
+\n - Сгенерировать совет для развития твоего эмоционального интеллекта \n - Описать тебе какую-нибудь эмоцию \n - Не хватает мотивации?  \n Но сначала зарегистрируйся, чтобы использовать весь мой функционал -> /registration",
         reply_markup = main_keyboard
     )
 
@@ -49,8 +50,7 @@ async def handle_project_info(message: types.Message):
 async def handle_support(message: types.Message):
     await message.answer(
         "Свяжитесь с разработчиком:\n"
-        "[Написать в Telegram (1)](https://t.me/neeeeectdis)\n"
-        "[Написать в Telegram (2)](https://t.me/veetalya)",
+        "[Написать в Telegram (1)](https://t.me/chib_rus)\n",
         parse_mode="Markdown"
     )
 
