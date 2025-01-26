@@ -33,7 +33,7 @@ class UserActionLoggerMiddleware(BaseMiddleware):
         username = message.from_user.username or "unknown"
         text = message.text or "No text"
 
-        if text in ["Информация о команде", "Викторина о здоровье", "Поддержка"]:
+        if text in ["Информация о проекте", "Викторина о здоровье", "Поддержка"]:
             action_type = "keyboard_button"
         elif text.startswith("/"):
             action_type = "command"
