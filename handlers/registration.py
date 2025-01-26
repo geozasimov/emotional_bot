@@ -57,4 +57,13 @@ async def add_gender(message: Message, state: FSMContext):
         await message.answer("Пожалуйста, введите свой пол корректно(м/ж)")
         return
     await state.update_data(gender=message.text)
+    await repository.add_user(
+        user_id=callback.from_user.id,
+        name=data.get("name"),
+        age=int(data.get("age")),
+        gender=data.get("gender")
+    )
+
+    await callback.message.answer(f"Приятно познакомиться, {data.get('name')}!\nТеперь каждый день вечером вам будет предложено пройти анкетирование для отслеживание вашего состояния.\nКаждую неделю вы сможете смотреть отчет и получать мою рецензию!")
+   
 
