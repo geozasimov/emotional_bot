@@ -14,7 +14,12 @@ class UserAuthorizationMiddleware(BaseMiddleware):
         
         state = data.get('raw_state', None)
 
-        if state and state.state in [Registration.name.state, Registration.age.state, Registration.gender.state]:
+        # Проверяем строковое состояние вместо объекта
+        if state and state in [
+            str(Registration.name),
+            str(Registration.age),
+            str(Registration.gender)
+        ]:
             return await handler(event, data)
 
         user_id = None
@@ -29,11 +34,9 @@ class UserAuthorizationMiddleware(BaseMiddleware):
         
         user = await repository.get_user(user_id)
         
-        if not user:
-            if event.message and event.message.text:
-                if not event.message.text.startswith('/registration') and not event.message.text.startswith('/start'):
-                    await event.message.answer("Вы не зарегистрированы. Пожалуйста, зарегистрируйтесь, чтобы использовать бота.")
-                    return
+        if not user and event.message and event.message.text:
+            if not event.message.text.startswith('/registration') and not event.message.text.startswith('/start'):
+                await event.message.answer("Вы не зарегистрированы. Пожалуйста, зарегистрируйтесь, чтобы использовать бота.")
+                return
     
         return await handler(event, data)
-
