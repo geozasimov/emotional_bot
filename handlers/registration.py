@@ -1,7 +1,5 @@
 from handlers.handler import router
 from database import repository
-from handlers import daily_survey
-from handlers import review
 
 from aiogram import Bot
 from aiogram.fsm.state import StatesGroup, State
