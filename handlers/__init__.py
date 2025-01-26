@@ -11,4 +11,3 @@ from .gigachat.gigachat_recomendations import *
 
 from .middlewares.action_logger import *
 from .middlewares.authorization import *
-from .middlewares.scheduler import *
