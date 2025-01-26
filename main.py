@@ -2,7 +2,6 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from handlers.recommendations import ButtonRouter
 from handlers import *
@@ -14,8 +13,7 @@ async def set_commands(bot: Bot):
         BotCommand(command="/start", description="Начать работу с ботом"),
         BotCommand(command="/registration", description="Пройти регистрацию"),
         BotCommand(command="/edit", description="Подкорректируйте данные"),
-        BotCommand(command="/profile", description="Ваши данные"),
-        BotCommand(command="/report", description="Отчет о вашем состоянии")
+        BotCommand(command="/profile", description="Ваши данные")
     ]
     await bot.set_my_commands(commands)
 
@@ -25,7 +23,6 @@ async def main():
     telegram_bot = Bot(token=cfg.telegram_token)
 
     dispatcher = Dispatcher(storage=MemoryStorage())
-    scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
 
     dispatcher.include_router(router)
     dispatcher.include_router(ButtonRouter)
@@ -33,7 +30,6 @@ async def main():
 
     dispatcher.update.middleware(UserAuthorizationMiddleware()) 
     dispatcher.update.middleware(UserActionLoggerMiddleware())
-    dispatcher.update.middleware(SchedulerMiddleware(scheduler=scheduler))
 
     await repository.db.connect()
 
