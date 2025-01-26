@@ -53,7 +53,7 @@ async def add_age(message: Message, state: FSMContext):
     await message.answer('Введите ваш пол(м/ж):')
 
 @router.message(Registration.gender)
-async def add_gender(message: types.Message):
+async def add_gender(message: types.Message, state: FSMContext):
     if message.text.lower() != "м" and message.text.lower() != "ж":
         await message.answer("Пожалуйста, введите свой пол корректно(м/ж)")
         return
