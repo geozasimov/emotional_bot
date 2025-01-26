@@ -43,5 +43,5 @@ async def main():
 
         await dispatcher.start_polling(telegram_bot)
 
-if name == "main":
+if __name__ == "__main__":
     asyncio.run(main())
