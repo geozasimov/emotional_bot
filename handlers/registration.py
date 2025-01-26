@@ -34,7 +34,7 @@ async def add_name(message: Message, state: FSMContext):
     if not message.text.isalpha():
         await message.answer("Пожалуйста, введите имя буквами.")
         return
-    if  len(message.text) > 20:
+    if len(message.text) > 20:
         await message.answer("Имя слишком длинное.")
         return
 
@@ -49,16 +49,19 @@ async def add_age(message: Message, state: FSMContext):
         return
     await state.update_data(age=message.text)
     await state.set_state(Registration.gender)
-    await message.answer('Введите ваш пол(м/ж):')
+    
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Мужской', callback_data='gender_m')],
+        [InlineKeyboardButton(text='Женский', callback_data='gender_f')]
+    ])
+    await message.answer('Выберите ваш пол:', reply_markup=keyboard)
 
-@router.message(Registration.gender)
-async def add_gender(message: Message, state: FSMContext):
-    if message.text.lower() != "м" and message.text.lower() != "ж":
-        await message.answer("Пожалуйста, введите свой пол корректно(м/ж)")
-        return
-    await state.update_data(gender=message.text)
+@router.callback_query()
+async def add_gender(callback: CallbackQuery, state: FSMContext):
+    gender = callback.data.split('_')[1]
     await callback.message.edit_reply_markup(reply_markup=None)
-
+    
+    await state.update_data(gender=gender)
     data = await state.get_data()
     await state.clear()
 
@@ -70,4 +73,3 @@ async def add_gender(message: Message, state: FSMContext):
     )
 
     await callback.message.answer(f"Приятно познакомиться, {data.get('name')}!")
-
