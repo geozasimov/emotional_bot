@@ -19,9 +19,20 @@ cd emotional_bot
 ```
 Добавьте свою конфигурацию в .env файл, а точнее параметры базы данных, токен Gigachat от сбер и токен телеграмм бота от BotFather
 
+Пример файла .env:
+--
+POSTGRES_PASSWORD=...
+POSTGRES_USER=...
+POSTGRES_DB=...
+POSTGRES_HOST=...
+POSTGRES_PORT=...
+
+TELEGRAM_TOKEN="..."
+
+GIGACHAT_KEY="..."
 ```
 docker-compose run migrate
-docker-compose up
+docker-compose up --build
 ```
 
 
