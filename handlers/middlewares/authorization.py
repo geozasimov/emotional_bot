@@ -15,11 +15,7 @@ class UserAuthorizationMiddleware(BaseMiddleware):
         state = data.get('raw_state', None)
 
         # Проверяем строковое состояние вместо объекта
-        if state and state in [
-            str(Registration.name),
-            str(Registration.age),
-            str(Registration.gender)
-        ]:
+        if state in [Registration.name.state, Registration.age.state, Registration.gender.state]:
             return await handler(event, data)
 
         user_id = None
