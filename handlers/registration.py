@@ -4,6 +4,7 @@ from handlers import daily_survey
 from handlers import review
 
 from aiogram import Bot
+from aiogram import types
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.filters import Command
 from aiogram.types import Message
@@ -52,13 +53,13 @@ async def add_age(message: Message, state: FSMContext):
     await message.answer('Введите ваш пол(м/ж):')
 
 @router.message(Registration.gender)
-async def add_gender(message: Message, state: FSMContext):
+async def add_gender(message: types.Message):
     if message.text.lower() != "м" and message.text.lower() != "ж":
         await message.answer("Пожалуйста, введите свой пол корректно(м/ж)")
         return
     await state.update_data(gender=message.text)
     await repository.add_user(
-        user_id=callback.from_user.id,
+        user_id = message.from_user.id,
         name=data.get("name"),
         age=int(data.get("age")),
         gender=data.get("gender")
