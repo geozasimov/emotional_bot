@@ -6,7 +6,7 @@
 # Блок-схема
 [Посмотреть блок-схему]()
 
-![scheme](scheme.drawio)
+![scheme](Scheme.drawio)
 
 # Как запустить
 ## Telegram bot
